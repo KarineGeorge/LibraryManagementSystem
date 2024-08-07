@@ -27,6 +27,16 @@ public class Book {
     @Size(min=10, max=10, message="")
     private String isbn;
 
+    private boolean available = true;
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
     public Book() {
     }
 
