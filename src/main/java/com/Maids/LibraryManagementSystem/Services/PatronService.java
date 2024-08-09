@@ -1,6 +1,5 @@
 package com.Maids.LibraryManagementSystem.Services;
 
-import com.Maids.LibraryManagementSystem.Exceptions.BookNotFoundException;
 import com.Maids.LibraryManagementSystem.Exceptions.PatronIntegrityConstraintException;
 import com.Maids.LibraryManagementSystem.Exceptions.PatronNotFoundException;
 import com.Maids.LibraryManagementSystem.Models.Patron;
@@ -12,7 +11,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.regex.PatternSyntaxException;
 
 @Service
 public class PatronService {
@@ -46,10 +44,9 @@ public class PatronService {
         try{
             Patron oldPatron = getPatronById(id);
             oldPatron.setEmail(patron.getEmail());
-            oldPatron.setPassword(patron.getPassword());
             oldPatron.setName(patron.getName());
             oldPatron.setTelephone(patron.getTelephone());
-            return patronRepository.save(patron);
+            return patronRepository.save(oldPatron);
         }catch(DataIntegrityViolationException e){
             throw new PatronIntegrityConstraintException("Failed to create the patron due to integrity constraints.",e);
         }

@@ -5,8 +5,12 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
 
 @Entity
+@Table(name = "Books")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +27,22 @@ public class Book {
     @NotNull(message = "Book publication year is required")
     private Integer publicationYear;
 
+    @Column(unique = true)
     @NotBlank(message = "Book isbn is required")
-    @Size(min=10, max=10, message="")
     private String isbn;
 
     private boolean available = true;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(updatable = false)
+    private Timestamp createdAt;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(updatable = true)
+    private Timestamp updatedAt;
+
 
     public boolean isAvailable() {
         return available;
@@ -47,9 +62,6 @@ public class Book {
         this.publicationYear = publicationYear;
         this.isbn = isbn;
     }
-
-
-
 
     public Long getId() {
         return id;

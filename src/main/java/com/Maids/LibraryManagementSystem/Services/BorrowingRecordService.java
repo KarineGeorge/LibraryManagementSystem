@@ -10,9 +10,11 @@ import com.Maids.LibraryManagementSystem.Models.Patron;
 import com.Maids.LibraryManagementSystem.Repositories.BookRepository;
 import com.Maids.LibraryManagementSystem.Repositories.BorrowingRecordRepository;
 import com.Maids.LibraryManagementSystem.Repositories.PatronRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Service
@@ -29,30 +31,34 @@ public class BorrowingRecordService {
         this.bookRepository = bookRepository;
     }
 
-    public BorrowingRecord addBorrowingRecord(Long bookId, Long patronId){
+    public BorrowingRecord borrowBook(Long bookId, Long patronId){
         Book book = bookRepository.findById(bookId).orElseThrow(()->new BookNotFoundException("Book not found exception"));
         Patron patron = patronRepository.findById(patronId).orElseThrow(()->new PatronNotFoundException("Patron not found exception"));
 
         if(!book.isAvailable()){
-            throw new BookNotAvailableException("Book is not available");
+            throw new BookNotAvailableException("Book is already borrowed");
         }
+        book.setAvailable(false);
 
         BorrowingRecord borrowingRecord = new BorrowingRecord();
         borrowingRecord.setBook(book);
         borrowingRecord.setPatron(patron);
-        borrowingRecord.setBorrowDate(new Date());
+        borrowingRecord.setBorrowDate(new Timestamp(new Date().getTime()));
         return borrowingRecordRepository.save(borrowingRecord);
     }
 
-    public BorrowingRecord updateBorrowingRecord(Long bookId, Long patronId){
+    @Transactional
+    public BorrowingRecord returnBook(Long bookId, Long patronId){
+
         Book book = bookRepository.findById(bookId).orElseThrow(()->new BookNotFoundException("Book not found exception"));
         Patron patron = patronRepository.findById(patronId).orElseThrow(()->new PatronNotFoundException("Patron not found exception"));
         BorrowingRecord borrowingRecord = borrowingRecordRepository.findLatestRecord(book,patron).orElseThrow(()->new BorrowingRecordNotAvailable("Borrowing record not found"));
 
-        if(borrowingRecord.getReturnDate()!= null){
+        if(borrowingRecord.getReturnDate() != null){
             throw new BorrowingRecordNotAvailable("Borrowing record not found");
         }
-
+        borrowingRecord.setReturnDate(new Timestamp(new Date().getTime()));
+        book.setAvailable(true);
         return borrowingRecordRepository.save(borrowingRecord);
     }
 }

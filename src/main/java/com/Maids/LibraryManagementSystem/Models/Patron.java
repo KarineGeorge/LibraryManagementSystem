@@ -2,8 +2,12 @@ package com.Maids.LibraryManagementSystem.Models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
 
 @Entity
+@Table(name = "Patrons")
 public class Patron {
 
     @Id
@@ -18,22 +22,25 @@ public class Patron {
     @NotNull(message = "Patron email is required")
     private String email;
 
-    @Column(unique = true)
+    @Column()
     @NotBlank(message = "Enter a valid telephone number")
     private String telephone;
 
-    @NotBlank(message = "Password is mandatory")
-    @Size(min = 8, message = "Password must be at least 8 characters long")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$",
-            message = "Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and no whitespace")
-    private String password;
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(updatable = false)
+    private Timestamp createdAt;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(updatable = true)
+    private Timestamp updatedAt;
 
     public Patron(Long id, String name, String email, String telephone, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.telephone = telephone;
-        this.password = password;
     }
 
     public Patron() {
@@ -71,11 +78,4 @@ public class Patron {
         this.telephone = telephone;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

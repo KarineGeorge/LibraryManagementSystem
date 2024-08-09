@@ -23,20 +23,15 @@ public class BorrowingRecord {
     private Patron patron;
 
     @Temporal(TemporalType.DATE)
-    private Date borrowDate;
+    private Timestamp borrowDate;
 
     @Temporal(TemporalType.DATE)
-    private Date returnDate;
-
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(updatable = false)
-    private Timestamp createdAt;
+    private Timestamp returnDate;
 
     public BorrowingRecord() {
     }
 
-    public BorrowingRecord(Long id, Book book, Patron patron, Date borrowDate, Date returnDate) {
+    public BorrowingRecord(Long id, Book book, Patron patron, Timestamp borrowDate, Timestamp returnDate) {
         this.id = id;
         this.book = book;
         this.patron = patron;
@@ -72,7 +67,7 @@ public class BorrowingRecord {
         return borrowDate;
     }
 
-    public void setBorrowDate(Date borrowDate) {
+    public void setBorrowDate(Timestamp borrowDate) {
         this.borrowDate = borrowDate;
     }
 
@@ -80,15 +75,8 @@ public class BorrowingRecord {
         return returnDate;
     }
 
-    public void setReturnDate(Date returnDate) {
+    public void setReturnDate(Timestamp returnDate) {
         this.returnDate = returnDate;
     }
 
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
 }
