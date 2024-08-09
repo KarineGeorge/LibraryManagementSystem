@@ -53,10 +53,6 @@ public class BorrowingRecordService {
         Book book = bookRepository.findById(bookId).orElseThrow(()->new BookNotFoundException("Book not found exception"));
         Patron patron = patronRepository.findById(patronId).orElseThrow(()->new PatronNotFoundException("Patron not found exception"));
         BorrowingRecord borrowingRecord = borrowingRecordRepository.findLatestRecord(book,patron).orElseThrow(()->new BorrowingRecordNotAvailable("Borrowing record not found"));
-
-        if(borrowingRecord.getReturnDate() != null){
-            throw new BorrowingRecordNotAvailable("Borrowing record not found");
-        }
         borrowingRecord.setReturnDate(new Timestamp(new Date().getTime()));
         book.setAvailable(true);
         return borrowingRecordRepository.save(borrowingRecord);

@@ -22,10 +22,10 @@ public class BorrowingRecord {
     @JoinColumn(name = "patron_id", nullable = false)
     private Patron patron;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp borrowDate;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp returnDate;
 
     public BorrowingRecord() {

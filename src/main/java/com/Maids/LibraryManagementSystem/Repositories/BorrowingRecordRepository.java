@@ -14,6 +14,6 @@ public interface BorrowingRecordRepository extends JpaRepository<BorrowingRecord
     void deleteByPatronId(Long id);
 
     BorrowingRecord findByBookIdAndPatronId(Long bookId, Long patronId);
-    @Query("Select B from BorrowingRecord B Where B.book = :book AND B.patron = :patron Order By B.borrowDate DESC Limit 1")
+    @Query("Select B from BorrowingRecord B Where B.book = :book AND B.patron = :patron AND B.returnDate IS NULL")
     Optional<BorrowingRecord> findLatestRecord(@Param("book") Book book, @Param("patron")Patron patron);
 }
