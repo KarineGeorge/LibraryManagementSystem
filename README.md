@@ -72,7 +72,7 @@ Validation is applied to both models and DTOs to ensure data integrity and consi
     - Required JSON Payload:
       ```json
         {
-          "name": "patron name",
+          "name": "librarian name",
           "email": "email@example.com",
           "password": "password"
         }
@@ -112,6 +112,15 @@ For Authentication:
 #### Patron Management (authentication required)
 - GET /api/patrons - Retrieve a list of all patrons.
 - GET /api/patrons/{id} - Retrieve details of a specific patron by ID.
+- POST /api/patrons - Add a new patron
+     - Required JSON Payload for updated info:
+       ```json
+         {
+           "name": "patron name",
+           "email": "email@example.com",
+           "telephone":"phone_number"
+         }
+       ```
 - PUT /api/patrons/{id} - Update an existing patron's information.
      - Required JSON Payload for updated info:
        ```json
@@ -133,6 +142,7 @@ For Authentication:
 - POST /api/borrow/{bookId}/patron/{patronId} - Allow a patron to borrow a book.
 - PUT /api/return/{bookId}/patron/{patronId} - Allow a patron to return a book.
 
+For Authentication:
    1) Obtain JWT Token from Login:
    2) Extract the JWT token from the response.
    3) Add the token to the Authorization header in subsequent requests to secured endpoints:
