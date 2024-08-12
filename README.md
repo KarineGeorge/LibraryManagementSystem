@@ -60,7 +60,7 @@ Validation is applied to both models and DTOs to ensure data integrity and consi
 ### API Endpoints
 
 #### Authentication Endpoints
-- POST /api/auth/login - Authenticate a user and return a JWT.
+- POST /api/auth/login - Authenticate a librarian and return a JWT.
    - Required JSON Payload:
      ```json
         {
@@ -68,7 +68,7 @@ Validation is applied to both models and DTOs to ensure data integrity and consi
           "password": "password"
         }
      ```
-- POST /api/auth/register - Register a new patron.
+- POST /api/auth/signup - Register a new librarian.
     - Required JSON Payload:
       ```json
         {
